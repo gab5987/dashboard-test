@@ -1,0 +1,27 @@
+Desafio NEXTJS Davi
+
+
+
+Resumo:
+Criar uma tela de login que chame uma rota na api para validar os dados, caso esteja corretos redirecionar o usuário para uma tela de dashboard.
+Na tela de dashboard deve ser possível vizualizar os usuários de uma rota api que tem os dados HARD CODED.
+
+Tecnologias:
+- NEXTJS
+- Typescript
+- TailwindCSS
+- MantineUI / MantineCSS
+- Axios
+- React Hook Form
+
+Disclaimer:
+Todos os dados das rotas da api devem estar mockados e fictícios, o foco é o desenvolvimento do front-end e o roteamento das páginas.
+
+Colocar o projeto no github e enviar o link.
+
+Desejável que os commits sejam padronizados com
+- feat: para novas features
+- fix: para correções de bugs
+- doc: para documentação
+- rem: para remoção de código
+- refac: para refatoração de código
