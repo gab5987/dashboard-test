@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from './navbar'
 import Sidebar from "./sidebar";
+import UserList from './userList';
 
 export default class Dashboard extends React.Component<{}, {
     isLoggedIn: undefined | boolean,
@@ -18,10 +19,16 @@ export default class Dashboard extends React.Component<{}, {
 
     render() {
         return (
-            <>
+            <div>
                 <Navbar/>
-                <Sidebar/>
-            </>
+                <div className="flex">
+                    <Sidebar/>
+                    <div className="grow h-full">
+                        <UserList/>
+                    </div>
+                    
+                </div>
+            </div>
         )
     }
 }
