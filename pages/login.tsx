@@ -1,28 +1,50 @@
 import React from "react";
+import { getProviders, signIn } from "next-auth/react"
+import { getCsrfToken } from "next-auth/react"
 
-export default class extends React.Component<{}, {
-    userEmail: undefined | string, userPass: undefined | string,
+export async function getServerSideProps(context: any) {
+    return {
+      props: {
+        csrfToken: await getCsrfToken(context),
+      },
+    }
+  }
+
+export default class extends React.Component<{ csrfToken: any}, {
+    Username: undefined | string, Password: undefined | string,
 }> {
     constructor(props: never) {
         super(props);
         this.state = {
-            userEmail: undefined,
-            userPass: undefined
+            Username: undefined,
+            Password: undefined
         }
     }
-    render() {
+
+    async handleSubmit(event: any) {
+        event.preventDefault();
+
+        const tst = await signIn('credentials', {
+            email: this.state.Username,
+            password: this.state.Password,
+            // redirect: true,
+            callbackUrl: `${window.location.origin}/dashboard`
+        })
+    }
+    render() { console.log(this.props.csrfToken)
         return (
             <>
             <p className="tip"></p>
                 <div className="cont">
-                <form className="form">
+                <form className="form" onSubmit={(event) => this.handleSubmit(event)}>
+                <input name="csrfToken" type="hidden" defaultValue={this.props.csrfToken} />
                     <h2 style={{ color: "#cfcfcf" }}>Bem Vindo</h2>
                     <label>
                         <span>Email</span>
                         <input
-                            type="email"
-                            value={this.state.userEmail}
-                            onChange={(event) => this.setState({ userEmail: event.target.value })}
+                            type="text"
+                            value={this.state.Username}
+                            onChange={(event) => this.setState({ Username: event.target.value })}
                         />
                     </label>
 
@@ -30,8 +52,8 @@ export default class extends React.Component<{}, {
                         <span>Senha</span>
                         <input
                             type="password"
-                            value={this.state.userPass}
-                            onChange={(event) => this.setState({ userPass: event.target.value })}
+                            value={this.state.Password}
+                            onChange={(event) => this.setState({ Password: event.target.value })}
                         />
                     </label>
 
@@ -57,4 +79,8 @@ export default class extends React.Component<{}, {
             </>
         )
     }
+}
+
+const useLogin = () => {
+
 }
