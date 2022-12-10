@@ -26,7 +26,8 @@ const authOptions = {
         else return {status: "ok"}
       }
     })
-  ]
+  ],
+  secret: "G4thegw6xcAqmOh1S2f/PFN5EuFhA/zImUpYq0O+/EI=",
 }
 
 export default NextAuth(authOptions)
