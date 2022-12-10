@@ -10,7 +10,7 @@ export async function getServerSideProps(context: any) {
     }
   }
 
-export default class extends React.Component<{ csrfToken: any}, {
+export default class Login extends React.Component<{ csrfToken: any}, {
     Username: undefined | string, Password: undefined | string,
 }> {
     constructor(props: never) {
