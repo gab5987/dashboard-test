@@ -1,22 +1,33 @@
+import axios from "axios";
+
 import React from "react";
 import Navbar from './navbar'
 import Sidebar from "./sidebar";
 import UserList from './userList';
-import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
 
+export default class Dashboard extends React.Component {
 
-export default function Dashboard(){
-    const {status, data} = useSession();
+    UNSAFE_componentWillMount(): void { this.axiosGet() }
 
-    console.log(status)
-    useEffect(() => {
-        (status === 'unauthenticated') && window.location.replace("/login");
-    }, [status])
+    async axiosGet() {
+        const searchParams = new URLSearchParams(window.location.search)
+        axios({
+            method: 'GET',
+            url: `/api/auth/Auth?jdw=${searchParams.get("q")}`
+        })
+        .catch((error) => {
+            alert(error)
+            switch(error.response.status) {
+                case 200: break;
+                case 500: alert("Erro interno de servidor"); break;
+                default: window.location.replace('/login'); break;
+            };
+        })
+    }
 
-    if(status === 'loading') return <p> Loading... </p>
-
-    if(status === 'authenticated') return <IsLoggedIn />
+    render() {
+        return <IsLoggedIn />
+    }
 }
 
 const IsLoggedIn = () => {

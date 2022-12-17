@@ -13,7 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if(result.rows[0]) {
       const generatedJdw: string = randomString();
-      await conn.query(`INSERT INTO jdw_holder(jdw) VALUES('${generatedJdw}')`)
+
+      await conn.query(`DELETE FROM jdw_holder WHERE user_id = '${result.rows[0].user_id}'`)
+      await conn.query(`INSERT INTO jdw_holder(jdw, user_id) VALUES('${generatedJdw}', '${result.rows[0].user_id}')`)
 
       res.status(200).json({
         result: result.rows,

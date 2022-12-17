@@ -1,16 +1,15 @@
 import React from "react";
-import { getProviders, signIn } from "next-auth/react"
-import { getCsrfToken } from "next-auth/react"
+import axios from "axios";
 
-export async function getServerSideProps(context: any) {
-    return {
-      props: {
-        csrfToken: await getCsrfToken(context),
-      },
+
+export function catchApiStuff(response: any) {
+    switch(response.response.status) {
+        case 200: alert("deu bom"); break;
+        case 401: alert("Usuario ou senha incorretos"); break;
+        case 500: alert("Erro interno de servidor")
     }
-  }
-
-export default class Login extends React.Component<{ csrfToken: any}, {
+}
+export default class Login extends React.Component<{}, {
     Username: undefined | string, Password: undefined | string,
 }> {
     constructor(props: never) {
@@ -24,20 +23,20 @@ export default class Login extends React.Component<{ csrfToken: any}, {
     async handleSubmit(event: any) {
         event.preventDefault();
 
-        const tst = await signIn('credentials', {
-            email: this.state.Username,
-            password: this.state.Password,
-            // redirect: true,
-            callbackUrl: `${window.location.origin}/dashboard`
-        })
+        axios({
+            method: 'get',
+            url: `/api/auth/Login?em=${this.state.Username}&ps=${this.state.Password}`,
+          })
+            .then((response) => window.location.replace(`/dashboard?q=${response.data.jdw}`))
+            .catch((error) => catchApiStuff(error))
     }
-    render() { console.log(this.props.csrfToken)
+
+    render() {
         return (
             <>
             <p className="tip"></p>
                 <div className="cont">
                 <form className="form" onSubmit={(event) => this.handleSubmit(event)}>
-                <input name="csrfToken" type="hidden" defaultValue={this.props.csrfToken} />
                     <h2 style={{ color: "#cfcfcf" }}>Bem Vindo</h2>
                     <label>
                         <span>Email</span>
